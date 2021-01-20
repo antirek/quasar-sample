@@ -5,23 +5,9 @@ const favicon = require('serve-favicon')
 const fs = require('fs');
 const cors = require('cors');
 
-
 const app = express();
 app.use(express.json());
 app.use(cors())
-
-app.set('views', path.join(__dirname, '/views'));
-
-app.set('view engine', 'pug');
-app.use('/static',
-    express['static'](path.join(__dirname, './../node_modules')));
-
-app.use('/public',
-    express['static'](path.join(__dirname, './../client')));
-
-app.use('/img',
-    express['static'](path.join(__dirname, './../client/dist/img')));
-    //app.use(favicon(path.join(__dirname, './../client/dist/', 'favicon.ico')))
 
 app.get('/', (req, res) => {
   const file = fs.readFileSync(path.join(__dirname, './../client/dist/spa/index.html'));
@@ -48,6 +34,11 @@ app.get('/img/:filename', (req, res) => {
 app.get('/icons/:filename', (req, res) => {
   res.sendFile(path.join(__dirname, './../client/dist/spa/icons', req.params.filename));
 });
+
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, './../client/dist/spa/favicon.ico'));
+});
+
 
 app.listen(config.port, () => {
   console.log('started', config);
